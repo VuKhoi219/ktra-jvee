@@ -5,113 +5,74 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header bg-success text-white">
-                    <h4 class="mb-0">
-                        <i class="fas fa-plus me-2"></i>Add Student Score
-                    </h4>
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="fas fa-plus me-2"></i>Add Student Score</h4>
                 </div>
                 <div class="card-body">
                     <form th:action="@{/scores/add}" th:object="${studentScore}" method="post">
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="student" class="form-label">
-                                    <i class="fas fa-user me-1"></i>Student <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select"
-                                        th:classappend="${#fields.hasErrors('student')} ? 'error-field'"
-                                        id="student"
-                                        th:field="*{student}">
-                                    <option value="">Select a student</option>
-                                    <option th:each="student : ${students}"
-                                            th:value="${student.studentId}"
-                                            th:text="${student.studentCode + ' - ' + student.fullName}">
-                                    </option>
-                                </select>
-                                <div th:if="${#fields.hasErrors('student')}"
-                                     class="error-message mt-1">
-                                    <i class="fas fa-exclamation-circle me-1"></i>
-                                    <span th:errors="*{student}"></span>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="student" class="form-label">Student *</label>
+                            <select class="form-select" id="student" th:field="*{student}"
+                                    th:classappend="${#fields.hasErrors('student')} ? 'is-invalid' : ''">
+                                <option value="">Select a student</option>
+                                <option th:each="student : ${students}"
+                                        th:value="${student.studentId}"
+                                        th:text="${student.studentCode + ' - ' + student.fullName}">
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('student')}"
+                                 th:errors="*{student}"></div>
+                        </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label for="subject" class="form-label">
-                                    <i class="fas fa-book me-1"></i>Subject <span class="text-danger">*</span>
-                                </label>
-                                <select class="form-select"
-                                        th:classappend="${#fields.hasErrors('subject')} ? 'error-field'"
-                                        id="subject"
-                                        th:field="*{subject}">
-                                    <option value="">Select a subject</option>
-                                    <option th:each="subject : ${subjects}"
-                                            th:value="${subject.subjectId}"
-                                            th:text="${subject.subjectCode + ' - ' + subject.subjectName + ' (' + subject.credit + ' credits)'}">
-                                    </option>
-                                </select>
-                                <div th:if="${#fields.hasErrors('subject')}"
-                                     class="error-message mt-1">
-                                    <i class="fas fa-exclamation-circle me-1"></i>
-                                    <span th:errors="*{subject}"></span>
-                                </div>
-                            </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject *</label>
+                            <select class="form-select" id="subject" th:field="*{subject}"
+                                    th:classappend="${#fields.hasErrors('subject')} ? 'is-invalid' : ''">
+                                <option value="">Select a subject</option>
+                                <option th:each="subject : ${subjects}"
+                                        th:value="${subject.subjectId}"
+                                        th:text="${subject.subjectCode + ' - ' + subject.subjectName + ' (' + subject.credit + ' credits)'}">
+                                </option>
+                            </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('subject')}"
+                                 th:errors="*{subject}"></div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="score1" class="form-label">
-                                    <i class="fas fa-chart-bar me-1"></i>Score 1 (30%) <span class="text-danger">*</span>
-                                </label>
-                                <input type="number"
-                                       class="form-control"
-                                       th:classappend="${#fields.hasErrors('score1')} ? 'error-field'"
-                                       id="score1"
-                                       th:field="*{score1}"
-                                       step="0.1"
-                                       min="0"
-                                       max="10"
-                                       placeholder="0.0 - 10.0">
-                                <div th:if="${#fields.hasErrors('score1')}"
-                                     class="error-message mt-1">
-                                    <i class="fas fa-exclamation-circle me-1"></i>
-                                    <span th:errors="*{score1}"></span>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="score1" class="form-label">Score 1 (0.0 - 10.0) *</label>
+                                    <input type="number" class="form-control" id="score1"
+                                           th:field="*{score1}" step="0.1" min="0" max="10"
+                                           th:classappend="${#fields.hasErrors('score1')} ? 'is-invalid' : ''"
+                                           placeholder="e.g., 8.5">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('score1')}"
+                                         th:errors="*{score1}"></div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="score2" class="form-label">
-                                    <i class="fas fa-chart-line me-1"></i>Score 2 (70%) <span class="text-danger">*</span>
-                                </label>
-                                <input type="number"
-                                       class="form-control"
-                                       th:classappend="${#fields.hasErrors('score2')} ? 'error-field'"
-                                       id="score2"
-                                       th:field="*{score2}"
-                                       step="0.1"
-                                       min="0"
-                                       max="10"
-                                       placeholder="0.0 - 10.0">
-                                <div th:if="${#fields.hasErrors('score2')}"
-                                     class="error-message mt-1">
-                                    <i class="fas fa-exclamation-circle me-1"></i>
-                                    <span th:errors="*{score2}"></span>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="score2" class="form-label">Score 2 (0.0 - 10.0) *</label>
+                                    <input type="number" class="form-control" id="score2"
+                                           th:field="*{score2}" step="0.1" min="0" max="10"
+                                           th:classappend="${#fields.hasErrors('score2')} ? 'is-invalid' : ''"
+                                           placeholder="e.g., 7.0">
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('score2')}"
+                                         th:errors="*{score2}"></div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="alert alert-info">
                             <i class="fas fa-info-circle me-2"></i>
-                            <strong>Grade Calculation:</strong> Final Grade = Score 1 × 30% + Score 2 × 70%
-                            <br>
-                            <small>
-                                Grade Scale: A (≥8.0), B (6.0-7.9), D (4.0-5.9), F (<4.0)
-                            </small>
+                            <strong>Grade Calculation:</strong> Final Grade = 0.3 × Score1 + 0.7 × Score2
                         </div>
 
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="/" class="btn btn-secondary me-md-2">
-                                <i class="fas fa-times me-1"></i>Cancel
+                        <div class="d-flex justify-content-between">
+                            <a href="/" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Back
                             </a>
-                            <button type="submit" class="btn btn-success">
+                            <button type="submit" class="btn btn-primary">
                                 <i class="fas fa-save me-1"></i>Save Score
                             </button>
                         </div>
