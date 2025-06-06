@@ -1,0 +1,127 @@
+<!-- src/main/resources/templates/layout.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information System</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .navbar-brand {
+            font-weight: bold;
+            color: #2c3e50 !important;
+        }
+        .card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+        }
+        .btn-primary {
+            background-color: #3498db;
+            border-color: #3498db;
+        }
+        .btn-primary:hover {
+            background-color: #2980b9;
+            border-color: #2980b9;
+        }
+        .grade-A { background-color: #d4edda; color: #155724; }
+        .grade-B { background-color: #d1ecf1; color: #0c5460; }
+        .grade-D { background-color: #fff3cd; color: #856404; }
+        .grade-F { background-color: #f8d7da; color: #721c24; }
+        .table-header {
+            background-color: #6c757d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-graduation-cap me-2"></i>
+            Student Information System
+        </a>
+        <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+            <a class="nav-link" href="/students"><i class="fas fa-users me-1"></i>Students</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        <span th:text="${success}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-circle me-2"></i>
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div th:fragment="content">
+        <!-- Content will be replaced by specific pages -->
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+<!-- src/main/resources/templates/home.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html}">
+<body>
+<div th:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-chart-line me-2"></i>Student Information</h2>
+        <div>
+            <a href="/students/add" class="btn btn-success me-2">
+                <i class="fas fa-user-plus me-1"></i>+ Student
+            </a>
+            <a href="/scores/add" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i>+ Score
+            </a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-header">
+                    <tr>
+                        <th>#</th>
+                        <th>Student Id</th>
+                        <th>Student Name</th>
+                        <th>Subject Name</th>
+                        <th>Score 1</th>
+                        <th>Score 2</th>
+                        <th>Credit</th>
+                        <th>Grade</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="score, iterStat : ${studentScores}">
+                        <td th:text="${iterStat.count}"></td>
+                        <td th:text="${score.student.studentCode}"></td>
+                        <td th:text="${score.student.fullName}"></td>
+                        <td th:text="${score.subject.subjectName}"></td>
+                        <td th:text="${#numbers.formatDecimal(score.score1, 1, 1)}"></td>
+                        <td th:text="${#numbers.formatDecimal(score.score2, 1, 1)}"></td>
+                        <td th:text="${score.subject.credit}"></td>
+                        <td>
+                                    <span class="badge fs-6 px-3 py-2"
+                                          th:classappend="${'grade-' + score.letterGrade}"
+                                          th:text="${score.letterGrade}">
+                                    </span>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(studentScores)}">
+                        <td colspan="8" class="text-center text-muted py-4">
+                            <i class="fas fa-inbox fa-3x mb-3"></i>
+                            <br>No student scores available
+                        </td>
+                    </tr>
