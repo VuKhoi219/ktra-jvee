@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: html}">
+<body>
+<div th:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-user-plus me-2"></i>Add New Student
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/students/add}" th:object="${student}" method="post">
+                        <div class="mb-3">
+                            <label for="studentCode" class="form-label">
+                                <i class="fas fa-id-card me-1"></i>Student Code <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('studentCode')} ? 'error-field'"
+                                   id="studentCode"
+                                   th:field="*{studentCode}"
+                                   placeholder="Enter student code (e.g., 2007A10)"
+                                   maxlength="20">
+                            <div th:if="${#fields.hasErrors('studentCode')}"
+                                 class="error-message mt-1">
+                                <i class="fas fa-exclamation-circle me-1"></i>
+                                <span th:errors="*{studentCode}"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">
+                                <i class="fas fa-user me-1"></i>Full Name <span class="text-danger">*</span>
+                            </label>
+                            <input type="text"
+                                   class="form-control"
+                                   th:classappend="${#fields.hasErrors('fullName')} ? 'error-field'"
+                                   id="fullName"
+                                   th:field="*{fullName}"
+                                   placeholder="Enter full name"
+                                   maxlength="100">
+                            <div th:if="${#fields.hasErrors('fullName')}"
+                                 class="error-message mt-1">
+                                <i class="fas fa-exclamation-circle me-1"></i>
+                                <span th:errors="*{fullName}"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">
+                                <i class="fas fa-map-marker-alt me-1"></i>Address
+                            </label>
+                            <textarea class="form-control"
+                                      th:classappend="${#fields.hasErrors('address')} ? 'error-field'"
+                                      id="address"
+                                      th:field="*{address}"
+                                      rows="3"
+                                      placeholder="Enter address"
+                                      maxlength="255"></textarea>
+                            <div th:if="${#fields.hasErrors('address')}"
+                                 class="error-message mt-1">
+                                <i class="fas fa-exclamation-circle me-1"></i>
+                                <span th:errors="*{address}"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="/students" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times me-1"></i>Cancel
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i>Save Student
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
